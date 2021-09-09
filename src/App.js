@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import UserInputs from './UserInputs';
+
 
 /*
 This exercise will help you put together and practice all of the concepts you've
@@ -10,23 +12,30 @@ React and prepare you for your first project.
 The instructions for this project are located in the `instructions.md` file.
 */
 
-const players = {
-  users: [
-    {"firstName": "Osama",
-     "lastNAme": "Mohsen",
-     "userName": "OM",
-     "gamesPlayed":0},
-     {"firstName": "Nada",
-     "lastNAme": "Emad",
-     "userName": "NE",
-     "gamesPlayed":0},
-     {"firstName": "Aysel",
-     "lastNAme": "Osama",
-     "userName": "AO",
-     "gamesPlayed":1}
-  ]
-}
 class App extends Component {
+
+  buttontext = "Hide the Number of Games Played";
+  HIDE = false;
+state  = {
+  players: [ ]
+}
+  updateCurrentUsers = (user)=>{
+    this.state.players.push(user);
+    this.setState(()=>({players:this.state.players}))
+  }
+
+toggle = ()=>{
+  if (this.buttontext === "Hide the Number of Games Played")
+  {
+    this.buttontext = "Show the Number of Games Played"
+    this.HIDE = true;
+  }else{
+    this.buttontext = "Hide the Number of Games Played"
+    this.HIDE = false;
+  }
+  this.setState(()=>({players:this.state.players}))
+}
+
   render() {
     return (
       <div className="App">
@@ -34,43 +43,18 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
-        <div>
-            <p className="first-name">First name:
-              <input 
-                type = 'text'
-                placeholder = 'Input your first name'/>
-            </p>
-        </div>
-        <div>
-            <p className="last-name">Last name:
-              <input 
-                type = 'text'
-                placeholder = 'Input your last name'/>
-            </p>
-        </div>
-        <div>
-            <p className="user-name">User name:
-              <input 
-                type = 'text'
-                placeholder = 'Input your user name'/>
-            </p>
-        </div>
-        <div>
-          <button className="submit">
-                  Submit
-              </button>
-        </div>
+        <UserInputs currentUsers={this.state.players} updateCurrentUsers ={this.updateCurrentUsers}/>
         <div>
           <h2 className="submitted"> Submitted Players </h2>
         </div>
         <div>
           <ol className="users-list">
-            {players.users.map(user=><li key={user.userName}>{user.userName + " number of games played: " + user.gamesPlayed}</li>)}
+            {this.state.players.map(user=><li key={user.userName}>{this.HIDE?user.userName +" number of games played: */":user.userName + " number of games played: " + user.gamesPlayed}</li>)}
           </ol>
         </div>
         <div>
-          <button className="toggle">
-                Hide the Number of Games Played
+          <button className="toggle" onClick={this.toggle}>
+                {this.buttontext}
               </button>
         </div>
       </div>
